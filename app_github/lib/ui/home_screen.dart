@@ -53,7 +53,7 @@ class HomeScreen extends StatelessWidget {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const RestultsScreen()));
+                              builder: (context) => RestultsScreen()));
                     },
                     style: const ButtonStyle(),
                     child: const Text('Buscar', style: TextStyle(fontSize: 24)),
