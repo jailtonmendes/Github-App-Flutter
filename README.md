@@ -1,2 +1,3 @@
 # gitHubApp
- App para pesquisar usuários do github
+ App para pesquisar usuários do github com Flutter
+ 
