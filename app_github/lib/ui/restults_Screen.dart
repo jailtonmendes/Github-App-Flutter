@@ -1,25 +1,33 @@
 import 'package:app_github/github_repository.dart';
 import 'package:app_github/models/github_model.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class RestultsScreen extends StatelessWidget {
-  RestultsScreen({super.key});
+  final String? username;
+  RestultsScreen({super.key, this.username});
 
   final repository = GithubRepository();
 
   Widget _buildError() {
-    return const Center(child: Text('Erro ao buscar dados'));
+    return const Center(
+        child: Text(
+      'Erro ao buscar dados',
+      style: TextStyle(fontSize: 25, color: Colors.red),
+    ));
   }
 
   Widget _buildLoader() {
-    return const Center(
-      child: CircularProgressIndicator(),
-    );
+    return Center(
+        child: LoadingAnimationWidget.staggeredDotsWave(
+      color: const Color.fromARGB(255, 0, 0, 0),
+      size: 200,
+    ));
   }
 
   _buildBody() {
     return FutureBuilder<GithubModel>(
-        future: repository.fecthGithub(),
+        future: repository.fecthGithub(username),
         builder: (context, snapshot) {
           if (snapshot.hasData &&
               snapshot.connectionState == ConnectionState.done) {
@@ -39,11 +47,12 @@ class RestultsScreen extends StatelessWidget {
         width: 500,
         child: Column(
           children: [
-            SizedBox(
-              height: 200,
-              width: 200,
+            CircleAvatar(
+              backgroundColor: Colors.black,
+              radius: 90.0,
               child: CircleAvatar(
                 backgroundImage: NetworkImage(model.avatarUrl),
+                radius: 80,
               ),
             ),
             const SizedBox(
@@ -58,7 +67,7 @@ class RestultsScreen extends StatelessWidget {
             ),
             Text(
               model.blog,
-              style: const TextStyle(fontSize: 18),
+              style: const TextStyle(fontSize: 22),
             ),
             const SizedBox(
               height: 10,
@@ -70,12 +79,21 @@ class RestultsScreen extends StatelessWidget {
             const SizedBox(
               height: 10,
             ),
-            OutlinedButton.icon(
-              onPressed: () {},
-              icon: const Icon(Icons.public),
-              label: Text(
-                'Publicações: ${model.publicRepos.toString()}',
-                style: const TextStyle(color: Colors.black, fontSize: 18),
+            SizedBox(
+              height: 50,
+              child: OutlinedButton.icon(
+                style: ElevatedButton.styleFrom(
+                  side: const BorderSide(color: Colors.black, width: 1),
+                ),
+                onPressed: () {},
+                icon: const Icon(Icons.public),
+                label: Text(
+                  'Publicações: ${model.publicRepos.toString()}',
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 20,
+                  ),
+                ),
               ),
             ),
           ],
